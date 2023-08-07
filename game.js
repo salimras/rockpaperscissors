@@ -1,5 +1,9 @@
 //Game of rock paper scissors
 
+//Initialize scores of computer and player = 0
+let playerScore = 0;
+let computerScore  = 0;
+
 function getComputerChoice() {
     const choices = ['rock', 'paper', 'scissors'];
     const randomIndex = Math.floor(Math.random() * choices.length);
@@ -45,10 +49,10 @@ function getComputerChoice() {
 
 
   function playGame(playerSelection) {
-        let computerSelection = getComputerChoice();
+    let computerSelection = getComputerChoice();
     let result = playRound(playerSelection, computerSelection);
 
-    appendToBody(result);
+    updateResultText(result);
 
     if (result.startsWith("You Win")) {
       playerScore++;
@@ -56,23 +60,29 @@ function getComputerChoice() {
       computerScore++;
     }
     
+    
+    // Update and display the running score
+    updateResultText("Current Score - You: " + playerScore + ", Computer: " + computerScore);
   
-    appendToBody("Game Over! Final Score - You: " + playerScore + ", Computer: " + computerScore);
-  
-    if (playerScore > computerScore) {
-      appendToBody("Congratulations! You're the overall winner!");
-    } else if (playerScore < computerScore) {
-      appendToBody("Better luck next time! The computer wins this time.");
-    } else {
-      appendToBody("It's a draw! Try again to find the true champion.");
+    // Check if any player reached 5 points
+    if (playerScore === 5 || computerScore === 5) {
+      if (playerScore > computerScore) {
+        updateResultText("Congratulations! You're the overall winner!");
+      } else if (playerScore < computerScore) {
+        updateResultText("Better luck next time! The computer wins this time.");
+      } else {
+        updateResultText("It's a draw! Try again to find the true champion.");
+      }
+
+      // Reset the scores to play again
+      playerScore = 0;
+      computerScore = 0;
     }
   }
-  
-  function appendToBody(text) {
-    let resultsDiv = document.getElementById('results');
-    let newElement = document.createElement('p'); 
-    newElement.textContent = text; 
-    resultsDiv.appendChild(newElement); 
+    
+  function updateResultText(text) {
+    let resultElement = document.getElementById('resulttext');
+    resultElement.textContent = text;
   }
   
 
