@@ -14,17 +14,18 @@ function getComputerChoice() {
     // Make the playerSelection case insensitive
     playerSelection = playerSelection.toLowerCase();
   
-    // Compare playerSelection and computerSelection to determine the winner
+    let message = `Computer chose ${capitalizeFirstLetter(computerSelection)}! `;
+  
     if (playerSelection === computerSelection) {
-      return "It's a draw! Both chose " + playerSelection;
+      return [message + `It's a draw! Both chose ${playerSelection}`, null];
     } else if (
       (playerSelection === 'rock' && computerSelection === 'scissors') ||
       (playerSelection === 'scissors' && computerSelection === 'paper') ||
       (playerSelection === 'paper' && computerSelection === 'rock')
     ) {
-      return "You Win! " + capitalizeFirstLetter(playerSelection) + " beats " + computerSelection;
+      return [message + `${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}`, "win"];
     } else {
-      return "You Lose! " + capitalizeFirstLetter(computerSelection) + " beats " + playerSelection;
+      return [message + `${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}`, "lose"];
     }
   }
   
@@ -50,19 +51,18 @@ function getComputerChoice() {
 
   function playGame(playerSelection) {
     let computerSelection = getComputerChoice();
-    let result = playRound(playerSelection, computerSelection);
+    let [roundMessage, result] = playRound(playerSelection, computerSelection);
 
-    updateResultText(result);
-
-    if (result.startsWith("You Win")) {
+    if (result === "win") {
       playerScore++;
-    } else if (result.startsWith("You Lose")) {
+    } else if (result === "lose") {
       computerScore++;
     }
     
+    let scoreMessage = "Current Score - You: " + playerScore + ", Computer: " + computerScore;
     
-    // Update and display the running score
-    updateResultText("Current Score - You: " + playerScore + ", Computer: " + computerScore);
+    // Update the result text with both the round result and the current scores
+    updateResultText(roundMessage + "<br>" + scoreMessage);
   
     // Check if any player reached 5 points
     if (playerScore === 5 || computerScore === 5) {
@@ -82,7 +82,7 @@ function getComputerChoice() {
     
   function updateResultText(text) {
     let resultElement = document.getElementById('resulttext');
-    resultElement.textContent = text;
+    resultElement.innerHTML = text;
   }
   
 
