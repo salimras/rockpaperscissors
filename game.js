@@ -30,23 +30,32 @@ function getComputerChoice() {
   }
 
 
-  function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-  
-    for (let i = 0; i < 5; i++) {
-      let playerSelection = prompt("Choose rock, paper, or scissors:");
-      let computerSelection = getComputerChoice();
-      let result = playRound(playerSelection, computerSelection);
-  
-      appendToBody("Round " + (i + 1) + ": " + result);
-  
-      if (result.startsWith("You Win")) {
-        playerScore++;
-      } else if (result.startsWith("You Lose")) {
-        computerScore++;
-      }
+  // Event listeners for the buttons:
+  document.getElementById('rock').addEventListener('click', function() {
+    playGame('rock');
+  });
+
+  document.getElementById('paper').addEventListener('click', function() {
+      playGame('paper');
+  });
+
+  document.getElementById('scissors').addEventListener('click', function() {
+      playGame('scissors');
+  });
+
+
+  function playGame(playerSelection) {
+        let computerSelection = getComputerChoice();
+    let result = playRound(playerSelection, computerSelection);
+
+    appendToBody(result);
+
+    if (result.startsWith("You Win")) {
+      playerScore++;
+    } else if (result.startsWith("You Lose")) {
+      computerScore++;
     }
+    
   
     appendToBody("Game Over! Final Score - You: " + playerScore + ", Computer: " + computerScore);
   
@@ -60,12 +69,11 @@ function getComputerChoice() {
   }
   
   function appendToBody(text) {
-    let newElement = document.createElement('p'); // Create a new <p> element
-    newElement.textContent = text; // Set the text content of the new element
-    document.body.appendChild(newElement); // Append the new element to the body of the document
+    let resultsDiv = document.getElementById('results');
+    let newElement = document.createElement('p'); 
+    newElement.textContent = text; 
+    resultsDiv.appendChild(newElement); 
   }
-
-  game();
   
 
 
